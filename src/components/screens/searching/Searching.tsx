@@ -79,8 +79,8 @@ function UserCard(props: Partial<IUserCardProps>) {
   const { lastname, firstname, objectID } = props
 
   const handleClick = useCallback(() => {
-    navigate(`/messages/${objectID}`)
-  }, [navigate, objectID])
+    navigate(`/messages/${objectID}`, { state: props })
+  }, [navigate, objectID, props])
 
   return (
     <button onClick={handleClick} className="flex gap-4 items-center w-full">
