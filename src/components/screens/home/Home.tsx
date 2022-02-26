@@ -1,5 +1,7 @@
 import { IoMenuSharp } from 'react-icons/io5'
 import { RiEditLine } from 'react-icons/ri'
+import mailbox from 'src/assets/svg/mailbox.svg'
+import styles from './index.module.scss'
 
 const Home: React.FC<{}> = () => {
   return (
@@ -17,7 +19,12 @@ const Home: React.FC<{}> = () => {
           placeholder="Enter Name"
         />
       </div>
-      <section></section>
+      <section className="flex-grow-1 flex flex-col">
+        <div className="flex flex-col items-center gap-4 my-auto">
+          <img className={styles.empty} src={mailbox} alt="mailbox" />
+          <div>No messages at the moment.</div>
+        </div>
+      </section>
       <button className="rounded-full p-4 bg-white absolute bottom-0 right-0 mr-6 mb-6 shadow-md">
         <RiEditLine size={24} />
       </button>
