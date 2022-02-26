@@ -1,6 +1,6 @@
 # Cell 5 Trail Project
 
-This is powered by React and Typescript.
+This project was bootstrapped with Create react App Typescript template.
 
 ### Development Setup
 
@@ -45,7 +45,6 @@ CSS Tools:
 Third party library used:
 
 - **FingerPrintJS** - Browser Unique Identifier
-- **RematchJS** - Redux library
 
 **Firebase**
 
@@ -71,14 +70,14 @@ P2P Text chat (Message Screen)
 - Update message (Update)
 - Remove message (Delete)
 
-| **Requirement** | **Feature**                                 |
-| --------------- | ------------------------------------------- |
-| Create          | Send Message                                |
-| Read            | View Messages, Contacts                     |
-| Update          | Update Message                              |
-| Delete          | Remove Message, Contact                     |
-| Filter          | Search                                      |
-| Sort            | Sort Contact by name and date when filtered |
+| **Requirement** | **Feature**                   |
+| --------------- | ----------------------------- |
+| Create          | Send Message                  |
+| Read            | View Messages, Contacts       |
+| Update          | Update Message                |
+| Delete          | Remove Message, Contact       |
+| Filter          | Search                        |
+| Sort            | Sort Contact by name and date |
 
 ### Links
 
