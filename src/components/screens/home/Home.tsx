@@ -1,9 +1,17 @@
+import { useCallback } from 'react'
 import { IoMenuSharp } from 'react-icons/io5'
 import { RiEditLine } from 'react-icons/ri'
+import { useNavigate } from 'react-router-dom'
 import mailbox from 'src/assets/svg/mailbox.svg'
 import styles from './index.module.scss'
 
 const Home: React.FC<{}> = () => {
+  const navigate = useNavigate()
+
+  const handleClickCompose = useCallback(() => {
+    navigate('/search')
+  }, [navigate])
+
   return (
     <div className="h-full relative p-6 flex flex-col gap-6">
       <header className="flex items-center gap-4">
@@ -25,7 +33,10 @@ const Home: React.FC<{}> = () => {
           <div>No messages at the moment.</div>
         </div>
       </section>
-      <button className="rounded-full p-4 bg-white absolute bottom-0 right-0 mr-6 mb-6 shadow-md">
+      <button
+        onClick={handleClickCompose}
+        className="rounded-full p-4 bg-white absolute bottom-0 right-0 mr-6 mb-6 shadow-md"
+      >
         <RiEditLine size={24} />
       </button>
     </div>
