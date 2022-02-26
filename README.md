@@ -1,46 +1,91 @@
-# Getting Started with Create React App
+# Cell 5 Trail Project
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+This is powered by React and Typescript.
 
-## Available Scripts
+### Development Setup
 
-In the project directory, you can run:
+1. Install project dependencies:
 
-### `yarn start`
+   `yarn install`
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+2. Configure environment variables:
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+- Add `.env` file in the project's root directory.
+- Paste these lines to your `.env` file.
 
-### `yarn test`
+```
+REACT_APP_FIREBASE_API_KEY=
+REACT_APP_FIREBASE_AUTH_DOMAIN=
+REACT_APP_FIREBASE_PROJECT_ID=
+REACT_APP_FIREBASE_STORAGE_BUCKET=
+REACT_APP_FIREBASE_MESSAGING_SENDER_ID=
+REACT_APP_FIREBASE_APP_ID=
+REACT_APP_FIREBASE_MEASUREMENT_ID=
+```
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+- Get the values in the firebase console project settings and paste it in your `.env` file.
 
-### `yarn build`
+3. Start the development server:
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+`yarn start`
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+### Tools
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+**React** - User Interface Library
 
-### `yarn eject`
+**Typescript** - type safety
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+**Redux** - state management library
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+CSS Tools:
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+- **SASS** - CSS customization
+- **Tailwind** - CSS Framework
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+Third party library used:
 
-## Learn More
+- **FingerPrintJS** - Browser Unique Identifier
+- **RematchJS** - Redux library
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+**Firebase**
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+- **Firestore** - Database
+- **Authentication** - Used anonymous authentication for demo purpose only.
+
+**Git** - Source code Repository
+
+**Netlify** - CI /CD and Project Hosting
+
+### Scope
+
+Direct Messages (Contact List Screen)
+
+- View Direct Messages (Read)
+- Filter List
+- Sort by name and date
+
+P2P Text chat (Message Screen)
+
+- Send message (Create)
+- Receive message (Read)
+- Update message (Update)
+- Remove message (Delete)
+
+| **Requirement** | **Feature**                                 |
+| --------------- | ------------------------------------------- |
+| Create          | Send Message                                |
+| Read            | View Messages, Contacts                     |
+| Update          | Update Message                              |
+| Delete          | Remove Message, Contact                     |
+| Filter          | Search                                      |
+| Sort            | Sort Contact by name and date when filtered |
+
+### Other informations
+
+Project mock up:
+
+https://www.figma.com/file/PJZcZ4onFnDlkfLFwR7VaD/Cell-5-Paid-Trial-Project?node-id=7%3A1046
+
+Live demo:
+
+https://cell-5-trail-project.netlify.app/
