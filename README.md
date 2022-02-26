@@ -80,7 +80,7 @@ P2P Text chat (Message Screen)
 | Filter          | Search                                      |
 | Sort            | Sort Contact by name and date when filtered |
 
-### Other informations
+### Links
 
 Project mock up:
 

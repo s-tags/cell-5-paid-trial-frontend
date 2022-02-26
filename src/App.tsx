@@ -1,6 +1,8 @@
 import { Provider as Store } from 'react-redux'
 import { store } from 'src/services/redux/store'
-import { useEffect } from 'react'
+import { useEffect, Suspense } from 'react'
+import Layout from 'src/components/layout/Layout'
+import Routes from 'src/components/routes/Routes'
 
 function App() {
   useEffect(() => {
@@ -9,9 +11,11 @@ function App() {
 
   return (
     <Store store={store}>
-      <div>
-        <h1 className="text-4xl p-12">Tailwind</h1>
-      </div>
+      <Suspense fallback={<></>}>
+        <Layout>
+          <Routes />
+        </Layout>
+      </Suspense>
     </Store>
   )
 }
