@@ -1,4 +1,4 @@
-import { useCallback } from 'react'
+import { useCallback, useState } from 'react'
 import { RiArrowLeftLine, RiSendPlaneFill } from 'react-icons/ri'
 import { useLocation, useNavigate } from 'react-router-dom'
 import useMessages from 'src/hooks/useMessages'
@@ -7,7 +7,7 @@ import { IMessage } from 'src/services/firebase/sendMessages'
 import { store } from 'src/services/redux/store'
 import styles from './index.module.scss'
 import moment from 'moment'
-import { RiDeleteBin7Line, RiEdit2Line } from 'react-icons/ri'
+import { RiDeleteBin7Line, RiEdit2Line, RiCloseFill } from 'react-icons/ri'
 
 const Messaging: React.FC<{}> = () => {
   const messages = useMessages()
@@ -18,6 +18,10 @@ const Messaging: React.FC<{}> = () => {
   const navigate = useNavigate()
 
   const userId = store.getState().Authentication.user.id
+
+  const [messageUpdateData, setMessageUpdateData] = useState<IMessage | null>(
+    null,
+  )
 
   const handleClickBack = useCallback(() => {
     navigate(-1)
@@ -61,6 +65,7 @@ const Messaging: React.FC<{}> = () => {
                 id={item.id}
                 message={item.message}
                 time={time}
+                handleUpdate={() => setMessageUpdateData(item)}
               />
             )
 
@@ -72,10 +77,12 @@ const Messaging: React.FC<{}> = () => {
               lastname={state.lastname}
               message={item.message}
               time={time}
+              handleUpdate={() => setMessageUpdateData(item)}
             />
           )
         })}
       </section>
+      {!!messageUpdateData && <UpdateBar />}
       <footer className="flex items-center bg-white flex-shrink-0">
         <input
           id="textInput"
@@ -92,6 +99,25 @@ const Messaging: React.FC<{}> = () => {
   )
 }
 
+function UpdateBar() {
+  return (
+    <section
+      className={`flex-shrink-0 bg-white mb-1 flex items-center justify-between px-6 py-4 ${styles.update}`}
+    >
+      <div className="flex-grow-1">
+        <header className="font-medium">Edit Message</header>
+        <p className="text-sm w-full">
+          Update UI Update UI Update UI Update UI Update U UI Update UUI Update
+          UUI Update U
+        </p>
+      </div>
+      <button className="flex-shrink-0">
+        <RiCloseFill size={24} />
+      </button>
+    </section>
+  )
+}
+
 interface IMessageProps {
   message: string
   time: string
@@ -104,7 +130,7 @@ interface IReceivedMessageProps extends IMessageProps {
 }
 
 function ReceivedMessage(props: IReceivedMessageProps) {
-  const { firstname, lastname, message, time, id } = props
+  const { firstname, lastname, message, time, id, handleUpdate } = props
 
   const handleDelete = useCallback(() => {
     store.dispatch.Messages.deleteMessage(id)
@@ -120,7 +146,12 @@ function ReceivedMessage(props: IReceivedMessageProps) {
           {lastname?.[0]?.toUpperCase?.()}
         </div>
       </div>
-      <MessageCard id={id} message={message} time={time} />
+      <MessageCard
+        handleUpdate={handleUpdate}
+        id={id}
+        message={message}
+        time={time}
+      />
       <div className="pb-1 flex gap-2 self-end">
         <button onClick={handleDelete} className="opacity-30 hover:opacity-80">
           <RiDeleteBin7Line />
@@ -134,7 +165,7 @@ function ReceivedMessage(props: IReceivedMessageProps) {
 }
 
 function SentMessage(props: IMessageProps) {
-  const { message, time, id } = props
+  const { message, time, id, handleUpdate } = props
 
   const handleDelete = useCallback(() => {
     store.dispatch.Messages.deleteMessage(id)
@@ -150,11 +181,19 @@ function SentMessage(props: IMessageProps) {
           >
             <RiDeleteBin7Line />
           </button>
-          <button className="opacity-30 hover:opacity-80">
+          <button
+            onClick={handleUpdate}
+            className="opacity-30 hover:opacity-80"
+          >
             <RiEdit2Line />
           </button>
         </div>
-        <MessageCard id={id} message={message} time={time} />
+        <MessageCard
+          handleUpdate={handleUpdate}
+          id={id}
+          message={message}
+          time={time}
+        />
       </div>
     </div>
   )
@@ -163,6 +202,7 @@ function SentMessage(props: IMessageProps) {
 interface IMessageProps {
   message: string
   time: string
+  handleUpdate: () => any
 }
 
 function MessageCard(props: IMessageProps) {

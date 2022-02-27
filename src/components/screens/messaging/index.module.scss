@@ -10,3 +10,21 @@
 .dateTime {
   font-size: 10px;
 }
+
+.update {
+  & > div {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  header {
+    font-size: 10px;
+  }
+
+  p {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+}

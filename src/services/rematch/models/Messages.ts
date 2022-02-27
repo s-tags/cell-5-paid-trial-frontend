@@ -22,10 +22,6 @@ interface ISetMessagesParams {
   messages: IMessage[]
 }
 
-interface IDeleteMessageParams {
-  messageId: string
-}
-
 export const Messages = createModel<RootModel>()({
   state: MessagesState as IMessagesState,
   reducers: {
