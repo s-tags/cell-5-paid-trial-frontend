@@ -21,7 +21,6 @@ export const Messages = createModel<RootModel>()({
   reducers: {},
   effects: () => ({
     async sendMessage(payload: ISendMessageParams) {
-      console.log('Sending...')
       const state = store.getState()
       const conversationId = state.App.Conversation.activeId
 

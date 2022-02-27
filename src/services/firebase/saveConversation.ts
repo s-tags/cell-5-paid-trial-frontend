@@ -1,9 +1,17 @@
-import { getFirestore, collection, addDoc, getDoc } from 'firebase/firestore'
+import {
+  getFirestore,
+  collection,
+  addDoc,
+  getDoc,
+  doc,
+} from 'firebase/firestore'
 
-interface IConversation {
+export interface IConversation {
   participants: string[]
   messages?: any[]
   id: string
+  firstname?: string
+  lastname?: string
 }
 
 export default async function saveConversation(
@@ -14,10 +22,16 @@ export default async function saveConversation(
   const db = getFirestore()
 
   let conversation: IConversation
+
+  const receipientRef = doc(db, `cell-5-trial-project-users /${receipientId}`)
+  const senderRef = doc(db, `cell-5-trial-project-users /${senderId}`)
+
   const addedConversationRef = await addDoc(
     collection(db, 'cell-5-trial-project-conversations'),
     {
       participants: [senderId, receipientId],
+      [senderId]: receipientRef,
+      [receipientId]: senderRef,
     },
   ).catch(err => {
     error = err

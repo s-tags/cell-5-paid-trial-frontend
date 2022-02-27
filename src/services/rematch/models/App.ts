@@ -30,6 +30,7 @@ export const App = createModel<RootModel>()({
        */
       await signInAnonymously()
       await store.dispatch.Authentication.getUser()
+      store.dispatch.Conversation.getConversations()
     },
   }),
 })

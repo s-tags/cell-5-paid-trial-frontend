@@ -1,12 +1,19 @@
 import { useCallback } from 'react'
 import { IoMenuSharp } from 'react-icons/io5'
 import { RiEditLine } from 'react-icons/ri'
+import { useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 import mailbox from 'src/assets/svg/mailbox.svg'
 import styles from './index.module.scss'
+import { RootState } from 'src/services/redux/store'
+import { IConversation } from 'src/services/firebase/saveConversation'
 
 const Home: React.FC<{}> = () => {
   const navigate = useNavigate()
+
+  const conversations = useSelector<RootState, IConversation[]>(
+    state => state.Conversation.data,
+  )
 
   const handleClickCompose = useCallback(() => {
     navigate('/search')
@@ -28,10 +35,24 @@ const Home: React.FC<{}> = () => {
         />
       </div>
       <section className="flex-grow-1 flex flex-col">
-        <div className="flex flex-col items-center gap-4 my-auto">
-          <img className={styles.empty} src={mailbox} alt="mailbox" />
-          <div>No messages at the moment.</div>
-        </div>
+        {conversations.length && (
+          <div className="flex-col flex gap-4">
+            {conversations.map(item => (
+              <UserCard
+                key={`conversation-${item.id}`}
+                firstname={item.firstname}
+                lastname={item.lastname}
+                conversationId={item.id}
+              />
+            ))}
+          </div>
+        )}
+        {!conversations.length && (
+          <div className="flex flex-col items-center gap-4 my-auto">
+            <img className={styles.empty} src={mailbox} alt="mailbox" />
+            <div>No messages at the moment.</div>
+          </div>
+        )}
       </section>
       <button
         onClick={handleClickCompose}
@@ -40,6 +61,37 @@ const Home: React.FC<{}> = () => {
         <RiEditLine size={24} />
       </button>
     </div>
+  )
+}
+
+interface IUserCardProps {
+  firstname: string
+  lastname: string
+  objectID?: string
+  conversationId?: string
+}
+
+function UserCard(props: Partial<IUserCardProps>) {
+  const navigate = useNavigate()
+  const { lastname, firstname, conversationId } = props
+
+  const handleClick = useCallback(() => {
+    navigate(`/messages/${conversationId}`, { state: props })
+  }, [navigate, conversationId, props])
+
+  return (
+    <button onClick={handleClick} className="flex gap-4 items-center w-full">
+      <div
+        className="flex justify-center items-center rounded-full bg-gray-200"
+        style={{ height: 40, width: 40 }}
+      >
+        {firstname?.[0].toUpperCase()}
+        {lastname?.[0].toUpperCase()}
+      </div>
+      <div className="capitalize">
+        {firstname} {lastname}
+      </div>
+    </button>
   )
 }
 
