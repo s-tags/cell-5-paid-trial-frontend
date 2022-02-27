@@ -1,11 +1,11 @@
-import { useCallback } from 'react'
+import { useCallback, useEffect } from 'react'
 import { IoMenuSharp } from 'react-icons/io5'
 import { RiEditLine } from 'react-icons/ri'
 import { useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 import mailbox from 'src/assets/svg/mailbox.svg'
 import styles from './index.module.scss'
-import { RootState } from 'src/services/redux/store'
+import { RootState, store } from 'src/services/redux/store'
 import { IConversation } from 'src/services/firebase/saveConversation'
 
 const Home: React.FC<{}> = () => {
@@ -18,6 +18,13 @@ const Home: React.FC<{}> = () => {
   const handleClickCompose = useCallback(() => {
     navigate('/search')
   }, [navigate])
+
+  /**
+   * Reset the conversation ID when user navigate to Home
+   */
+  useEffect(() => {
+    store.dispatch.App.setActiveConversation('')
+  }, [])
 
   return (
     <div className="h-full relative p-6 flex flex-col gap-6">
@@ -77,6 +84,7 @@ function UserCard(props: Partial<IUserCardProps>) {
 
   const handleClick = useCallback(() => {
     navigate(`/messages/${conversationId}`, { state: props })
+    if (conversationId) store.dispatch.App.setActiveConversation(conversationId)
   }, [navigate, conversationId, props])
 
   return (

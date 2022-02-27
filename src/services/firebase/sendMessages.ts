@@ -4,12 +4,10 @@ import {
   addDoc,
   getDoc,
   Timestamp,
-  setDoc,
-  doc,
 } from 'firebase/firestore'
 import { store } from '../redux/store'
 
-interface IMessage {
+export interface IMessage {
   dateCreated?: any
   message: string
   promiseId: string

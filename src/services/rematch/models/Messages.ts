@@ -1,24 +1,37 @@
 import { createModel } from '@rematch/core'
-import sendMessage from 'src/services/firebase/sendMessages'
+import sendMessage, { IMessage } from 'src/services/firebase/sendMessages'
 import { store } from 'src/services/redux/store'
 import type { RootModel } from './'
 
-const MessagesState = {
-  '8doh1c5jk6wfledsysdlij': {
-    messages: [],
-  },
-}
+const MessagesState = {}
 
-export type IMessagesState = typeof MessagesState
+export type IMessagesState = {
+  [key: string]: {
+    messages: IMessage[]
+  }
+}
 
 interface ISendMessageParams {
   receipientId: string
   message: string
 }
 
+interface ISetMessagesParams {
+  id: string
+  messages: IMessage[]
+}
+
 export const Messages = createModel<RootModel>()({
-  state: MessagesState,
-  reducers: {},
+  state: MessagesState as IMessagesState,
+  reducers: {
+    setMessages: (state, { id, messages }: ISetMessagesParams) => ({
+      ...state,
+      [id]: {
+        ...state[id],
+        messages,
+      },
+    }),
+  },
   effects: () => ({
     async sendMessage(payload: ISendMessageParams) {
       const state = store.getState()
