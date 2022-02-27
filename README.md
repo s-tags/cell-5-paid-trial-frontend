@@ -1,4 +1,4 @@
-# Cell 5 Trail Project
+# Cell 5 Trial Project
 
 This project was bootstrapped with Create react App Typescript template.
 
