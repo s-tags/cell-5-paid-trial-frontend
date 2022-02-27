@@ -3,7 +3,7 @@ import { RiArrowLeftLine } from 'react-icons/ri'
 import { useSelector } from 'react-redux'
 import { RootState, store } from 'src/services/redux/store'
 import { IUser } from 'src/services/firebase/getUser'
-import { useCallback, useState } from 'react'
+import { useCallback } from 'react'
 
 const Layout: React.FC<{}> = ({ children }) => {
   return (
