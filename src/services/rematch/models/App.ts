@@ -7,6 +7,7 @@ const AppState = {
   Conversation: {
     activeId: '',
   },
+  showDrawer: false,
 }
 
 export type IAuthenticationState = typeof AppState
@@ -21,6 +22,7 @@ export const App = createModel<RootModel>()({
         activeId: id,
       },
     }),
+    setShowDrawer: (state, showDrawer) => ({ ...state, showDrawer }),
   },
   effects: () => ({
     async initializeApp() {

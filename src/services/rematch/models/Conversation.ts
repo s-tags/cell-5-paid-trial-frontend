@@ -33,6 +33,7 @@ export const Conversation = createModel<RootModel>()({
     },
     async getConversations() {
       const userId = store.getState().Authentication.user.id || ''
+      const user = store.getState().Authentication.user
 
       const db = getFirestore()
       const q = query(
@@ -52,10 +53,15 @@ export const Conversation = createModel<RootModel>()({
 
               /** Get user via reference */
               const receipientSnapshot = await getDoc((_data as any)?.[userId])
+
               if (receipientSnapshot.exists()) {
                 const receipient = receipientSnapshot.data() as IUser
                 _data.firstname = receipient.firstname
                 _data.lastname = receipient.lastname
+              } else {
+                /** handle self messaging */
+                _data.firstname = user.firstname
+                _data.lastname = user.lastname
               }
 
               conversations.push(_data)
