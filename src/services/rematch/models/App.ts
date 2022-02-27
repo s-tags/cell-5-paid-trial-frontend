@@ -3,13 +3,25 @@ import signInAnonymously from 'src/services/firebase/signInAnonymously'
 import { store } from 'src/services/redux/store'
 import type { RootModel } from './'
 
-const AppState = {}
+const AppState = {
+  Conversation: {
+    activeId: '',
+  },
+}
 
 export type IAuthenticationState = typeof AppState
 
 export const App = createModel<RootModel>()({
   state: AppState,
-  reducers: {},
+  reducers: {
+    setActiveConversation: (state, id: string) => ({
+      ...state,
+      Conversation: {
+        ...state.Conversation,
+        activeId: id,
+      },
+    }),
+  },
   effects: () => ({
     async initializeApp() {
       await store.dispatch.Authentication.getFingerPrint()

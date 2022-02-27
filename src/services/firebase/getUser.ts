@@ -12,6 +12,7 @@ export interface IUser {
   firstname: string
   lastname: string
   id?: string
+  objectID?: string
 }
 
 export default async function getUser(
