@@ -1,4 +1,4 @@
-import { useCallback, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import { RiArrowLeftLine, RiSendPlaneFill } from 'react-icons/ri'
 import { useLocation, useNavigate } from 'react-router-dom'
 import useMessages from 'src/hooks/useMessages'
@@ -31,12 +31,30 @@ const Messaging: React.FC<{}> = () => {
     const textInput = document.getElementById('textInput')
     const message = (textInput as HTMLInputElement).value
 
+    if (messageUpdateData) {
+      store.dispatch.Messages.updateMessage({
+        messageId: messageUpdateData.id,
+        message,
+      })
+      setMessageUpdateData(null)
+      ;(textInput as HTMLInputElement).value = ''
+      return
+    }
+
     store.dispatch.Messages.sendMessage({
       message,
       receipientId: state.objectID!,
     })
     ;(textInput as HTMLInputElement).value = ''
-  }, [state.objectID])
+  }, [state.objectID, messageUpdateData])
+
+  useEffect(() => {
+    if (messageUpdateData) {
+      const textInput = document.getElementById('textInput')
+      ;(textInput as HTMLInputElement).value = messageUpdateData.message
+      textInput?.focus?.()
+    }
+  }, [messageUpdateData])
 
   return (
     <div className="flex flex-col h-full">
@@ -82,7 +100,12 @@ const Messaging: React.FC<{}> = () => {
           )
         })}
       </section>
-      {!!messageUpdateData && <UpdateBar />}
+      {!!messageUpdateData && (
+        <UpdateBar
+          {...messageUpdateData}
+          handleClose={() => setMessageUpdateData(null)}
+        />
+      )}
       <footer className="flex items-center bg-white flex-shrink-0">
         <input
           id="textInput"
@@ -99,19 +122,19 @@ const Messaging: React.FC<{}> = () => {
   )
 }
 
-function UpdateBar() {
+interface IUpdateBarProps extends IMessage {
+  handleClose: () => any
+}
+function UpdateBar(props: IUpdateBarProps) {
   return (
     <section
       className={`flex-shrink-0 bg-white mb-1 flex items-center justify-between px-6 py-4 ${styles.update}`}
     >
       <div className="flex-grow-1">
         <header className="font-medium">Edit Message</header>
-        <p className="text-sm w-full">
-          Update UI Update UI Update UI Update UI Update U UI Update UUI Update
-          UUI Update U
-        </p>
+        <p className="text-sm w-full">{props.message}</p>
       </div>
-      <button className="flex-shrink-0">
+      <button onClick={props.handleClose} className="flex-shrink-0">
         <RiCloseFill size={24} />
       </button>
     </section>
@@ -156,7 +179,7 @@ function ReceivedMessage(props: IReceivedMessageProps) {
         <button onClick={handleDelete} className="opacity-30 hover:opacity-80">
           <RiDeleteBin7Line />
         </button>
-        <button className="opacity-30 hover:opacity-80">
+        <button onClick={handleUpdate} className="opacity-30 hover:opacity-80">
           <RiEdit2Line />
         </button>
       </div>
