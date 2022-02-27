@@ -1,4 +1,5 @@
 import { createModel } from '@rematch/core'
+import deleteMessage from 'src/services/firebase/deleteMessage'
 import sendMessage, { IMessage } from 'src/services/firebase/sendMessages'
 import { store } from 'src/services/redux/store'
 import type { RootModel } from './'
@@ -19,6 +20,10 @@ interface ISendMessageParams {
 interface ISetMessagesParams {
   id: string
   messages: IMessage[]
+}
+
+interface IDeleteMessageParams {
+  messageId: string
 }
 
 export const Messages = createModel<RootModel>()({
@@ -56,6 +61,10 @@ export const Messages = createModel<RootModel>()({
         Math.random().toString(36).slice(2)
 
       await sendMessage(conversationId, payload.message, promiseId)
+    },
+    async deleteMessage(messageId: string) {
+      const conversationId = store.getState().App.Conversation.activeId
+      await deleteMessage(conversationId, messageId)
     },
   }),
 })

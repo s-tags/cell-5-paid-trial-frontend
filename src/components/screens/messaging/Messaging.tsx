@@ -54,10 +54,20 @@ const Messaging: React.FC<{}> = () => {
           let isSent = false
           if (item.senderId === userId) isSent = true
 
-          if (isSent) return <SentMessage message={item.message} time={time} />
+          if (isSent)
+            return (
+              <SentMessage
+                key={`message-${item.id}`}
+                id={item.id}
+                message={item.message}
+                time={time}
+              />
+            )
 
           return (
             <ReceivedMessage
+              key={`message-${item.id}`}
+              id={item.id}
               firstname={state.firstname}
               lastname={state.lastname}
               message={item.message}
@@ -85,6 +95,7 @@ const Messaging: React.FC<{}> = () => {
 interface IMessageProps {
   message: string
   time: string
+  id: string
 }
 
 interface IReceivedMessageProps extends IMessageProps {
@@ -93,7 +104,12 @@ interface IReceivedMessageProps extends IMessageProps {
 }
 
 function ReceivedMessage(props: IReceivedMessageProps) {
-  const { firstname, lastname, message, time } = props
+  const { firstname, lastname, message, time, id } = props
+
+  const handleDelete = useCallback(() => {
+    store.dispatch.Messages.deleteMessage(id)
+  }, [id])
+
   return (
     <div className={`flex gap-2 ${styles.messageContainer}`}>
       <div className="flex items-end">
@@ -104,9 +120,9 @@ function ReceivedMessage(props: IReceivedMessageProps) {
           {lastname?.[0]?.toUpperCase?.()}
         </div>
       </div>
-      <MessageCard message={message} time={time} />
+      <MessageCard id={id} message={message} time={time} />
       <div className="pb-1 flex gap-2 self-end">
-        <button className="opacity-30 hover:opacity-80">
+        <button onClick={handleDelete} className="opacity-30 hover:opacity-80">
           <RiDeleteBin7Line />
         </button>
         <button className="opacity-30 hover:opacity-80">
@@ -118,19 +134,27 @@ function ReceivedMessage(props: IReceivedMessageProps) {
 }
 
 function SentMessage(props: IMessageProps) {
-  const { message, time } = props
+  const { message, time, id } = props
+
+  const handleDelete = useCallback(() => {
+    store.dispatch.Messages.deleteMessage(id)
+  }, [id])
+
   return (
     <div className="flex justify-end">
       <div className={`flex items-end gap-2 ${styles.messageContainer}`}>
         <div className="pb-1 flex gap-2">
-          <button className="opacity-30 hover:opacity-80">
+          <button
+            onClick={handleDelete}
+            className="opacity-30 hover:opacity-80"
+          >
             <RiDeleteBin7Line />
           </button>
           <button className="opacity-30 hover:opacity-80">
             <RiEdit2Line />
           </button>
         </div>
-        <MessageCard message={message} time={time} />
+        <MessageCard id={id} message={message} time={time} />
       </div>
     </div>
   )
