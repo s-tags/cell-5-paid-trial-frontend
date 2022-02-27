@@ -9,11 +9,15 @@ import styles from './index.module.scss'
 import moment from 'moment'
 import { RiDeleteBin7Line, RiEdit2Line, RiCloseFill } from 'react-icons/ri'
 
+interface ILocationState extends IUser {
+  conversationId: string
+}
+
 const Messaging: React.FC<{}> = () => {
   const messages = useMessages()
 
   const location = useLocation()
-  const state = location.state as IUser
+  const state = location.state as ILocationState
 
   const navigate = useNavigate()
 
@@ -48,6 +52,9 @@ const Messaging: React.FC<{}> = () => {
     ;(textInput as HTMLInputElement).value = ''
   }, [state.objectID, messageUpdateData])
 
+  /**
+   * Update message UI handler
+   */
   useEffect(() => {
     if (messageUpdateData) {
       const textInput = document.getElementById('textInput')
@@ -55,6 +62,13 @@ const Messaging: React.FC<{}> = () => {
       textInput?.focus?.()
     }
   }, [messageUpdateData])
+
+  useEffect(() => {
+    if (state.conversationId) {
+      if (!store.getState().App.Conversation.activeId)
+        store.dispatch.App.setActiveConversation(state.conversationId)
+    }
+  }, [state.conversationId])
 
   return (
     <div className="flex flex-col h-full">

@@ -10,6 +10,10 @@ import {
   orderBy,
 } from 'firebase/firestore'
 export default function useMessages() {
+  const conversationId = useSelector<RootState, string | null>(
+    state => state.App.Conversation.activeId,
+  )
+
   const messages = useSelector<RootState, IMessage[]>(state => {
     const conversationId = state.App.Conversation.activeId
     return state?.Messages?.[conversationId]?.messages || []
@@ -19,38 +23,40 @@ export default function useMessages() {
    * Get realtime changes
    */
   useEffect(() => {
-    const conversationId = store.getState().App.Conversation.activeId
+    let unsubscribe: any = () => {}
 
-    const db = getFirestore()
-    const q = query(
-      collection(
-        db,
-        `cell-5-trial-project-conversations/${conversationId}/messages`,
-      ),
-      orderBy('dateCreated', 'asc'),
-    )
+    if (conversationId) {
+      const db = getFirestore()
+      const q = query(
+        collection(
+          db,
+          `cell-5-trial-project-conversations/${conversationId}/messages`,
+        ),
+        orderBy('dateCreated', 'asc'),
+      )
 
-    const unsubscribe: any = onSnapshot(q, querySnapshot => {
-      const messages: IMessage[] = []
-      querySnapshot.forEach(doc => {
-        if (doc.exists()) {
-          const message = doc.data() as IMessage
-          message.id = doc.id
+      unsubscribe = onSnapshot(q, querySnapshot => {
+        const messages: IMessage[] = []
+        querySnapshot.forEach(doc => {
+          if (doc.exists()) {
+            const message = doc.data() as IMessage
+            message.id = doc.id
 
-          messages.push(message)
-        }
+            messages.push(message)
+          }
+        })
+
+        store.dispatch.Messages.setMessages({
+          id: conversationId,
+          messages,
+        })
       })
-
-      store.dispatch.Messages.setMessages({
-        id: conversationId,
-        messages,
-      })
-    })
+    }
 
     return () => {
       unsubscribe?.()
     }
-  }, [])
+  }, [conversationId])
 
   return messages
 }
