@@ -7,6 +7,7 @@ import { IMessage } from 'src/services/firebase/sendMessages'
 import { store } from 'src/services/redux/store'
 import styles from './index.module.scss'
 import moment from 'moment'
+import { RiDeleteBin7Line, RiEdit2Line } from 'react-icons/ri'
 
 const Messaging: React.FC<{}> = () => {
   const messages = useMessages()
@@ -30,6 +31,7 @@ const Messaging: React.FC<{}> = () => {
       message,
       receipientId: state.objectID!,
     })
+    ;(textInput as HTMLInputElement).value = ''
   }, [state.objectID])
 
   return (
@@ -68,6 +70,7 @@ const Messaging: React.FC<{}> = () => {
         <input
           id="textInput"
           autoFocus
+          autoComplete="off"
           placeholder="Type here..."
           className="w-full px-6 py-4"
         />
@@ -102,6 +105,14 @@ function ReceivedMessage(props: IReceivedMessageProps) {
         </div>
       </div>
       <MessageCard message={message} time={time} />
+      <div className="pb-1 flex gap-2 self-end">
+        <button className="opacity-30 hover:opacity-80">
+          <RiDeleteBin7Line />
+        </button>
+        <button className="opacity-30 hover:opacity-80">
+          <RiEdit2Line />
+        </button>
+      </div>
     </div>
   )
 }
@@ -110,7 +121,15 @@ function SentMessage(props: IMessageProps) {
   const { message, time } = props
   return (
     <div className="flex justify-end">
-      <div className={`flex gap-2 ${styles.messageContainer}`}>
+      <div className={`flex items-end gap-2 ${styles.messageContainer}`}>
+        <div className="pb-1 flex gap-2">
+          <button className="opacity-30 hover:opacity-80">
+            <RiDeleteBin7Line />
+          </button>
+          <button className="opacity-30 hover:opacity-80">
+            <RiEdit2Line />
+          </button>
+        </div>
         <MessageCard message={message} time={time} />
       </div>
     </div>
