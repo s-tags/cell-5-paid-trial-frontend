@@ -23,8 +23,8 @@ export default async function saveConversation(
 
   let conversation: IConversation
 
-  const receipientRef = doc(db, `cell-5-trial-project-users /${receipientId}`)
-  const senderRef = doc(db, `cell-5-trial-project-users /${senderId}`)
+  const receipientRef = doc(db, `cell-5-trial-project-users/${receipientId}`)
+  const senderRef = doc(db, `cell-5-trial-project-users/${senderId}`)
 
   const addedConversationRef = await addDoc(
     collection(db, 'cell-5-trial-project-conversations'),
